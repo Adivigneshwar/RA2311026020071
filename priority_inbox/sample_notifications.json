@@ -1,0 +1,38 @@
+[
+  {
+    "id": "event-001",
+    "type": "Event",
+    "message": "New tech talk by Prof. Smith tomorrow at 3 PM",
+    "timestamp": "2026-05-01T14:00:00Z"
+  },
+  {
+    "id": "placement-001",
+    "type": "Placement",
+    "message": "Amazon campus recruiting registration open - seats limited to 50",
+    "timestamp": "2026-05-02T09:00:00Z"
+  },
+  {
+    "id": "result-001",
+    "type": "Result",
+    "message": "Summer internship results - check student portal",
+    "timestamp": "2026-05-01T16:30:00Z"
+  },
+  {
+    "id": "event-002",
+    "type": "Event",
+    "message": "Hackathon registration begins next Monday",
+    "timestamp": "2026-05-01T10:00:00Z"
+  },
+  {
+    "id": "placement-002",
+    "type": "Placement",
+    "message": "Goldman Sachs internship program - apply by May 15",
+    "timestamp": "2026-05-02T08:00:00Z"
+  },
+  {
+    "id": "result-002",
+    "type": "Result",
+    "message": "Final exam timetable released",
+    "timestamp": "2026-05-02T11:00:00Z"
+  }
+]
