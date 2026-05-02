@@ -236,7 +236,7 @@ export async function requestAccessToken(fetchImpl: typeof fetch = fetch): Promi
     expiryTimestamp: calculateTokenExpiryTime(parsedResponse),
   };
 
-  return tokenStorage.token;
+  return tokenStorage.token as string;
 }
 
 // Acquire or reuse an access token for API authentication

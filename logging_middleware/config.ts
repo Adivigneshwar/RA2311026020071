@@ -1,69 +1,46 @@
-// Configuration management module for centralized settings and validation
-// Purpose: single source of truth for logging system constants, defaults, and validation rules
-// Allows configuration changes without modifying business logic
-
-// API Configuration: URL endpoints and transport settings
 export const apiConfiguration = {
-  // Base URL for all API calls (should be set at runtime via configureLoggingSystem)
   baseUrlForApis: "",
   
-  // Specific endpoint paths
   endpoints: {
     authenticationPath: "/evaluation-service/auth",
     loggingPath: "/evaluation-service/logs",
   },
 
-  // HTTP request timeout in milliseconds
   requestTimeoutMs: 15000,
 
-  // Maximum number of retries on transient failures
   maxRetryAttempts: 2,
 };
 
-// Token Management Configuration: expiry and refresh strategy
 export const tokenManagementConfig = {
-  // How many seconds before actual expiry should we consider a token "too old"
-  // This buffer prevents using tokens that expire mid-request
   refreshBufferSeconds: 30,
 
-  // Default token time-to-live if API doesn't specify expiry (in minutes)
   defaultTokenTtlMinutes: 55,
 
-  // Add safety margin to default TTL to avoid edge cases (in minutes)
   safetyMarginMinutes: 5,
 };
 
-// Logging Schema: allowed values and validation configuration
 export const loggingSchemaConfig = {
-  // Application stack/tier designations
   allowedStacks: ["frontend"],
 
-  // Severity levels in order of importance
   severityLevels: ["debug", "info", "warn", "error", "fatal"],
 
-  // Module/package categories
   categories: {
-    // Frontend-specific modules (UI components, state, API integration, etc.)
     frontendModules: ["api", "component", "hook", "page", "state", "style"],
     
-    // Shared/common modules (cross-stack utilities)
     sharedModules: ["auth", "config", "middleware", "utils"],
   },
 
-  // Log message constraints
   messageConstraints: {
     maxCharacters: 5000,
     allowEmpty: false,
   },
 
-  // Metadata field constraints
   metadataConstraints: {
     maxDepth: 5,
     maxProperties: 20,
   },
 };
 
-// Error Messages: user-friendly, consistent error reporting
 export const errorMessages = {
   validation: {
     stackInvalid: (received: string): string =>
@@ -97,7 +74,6 @@ export const errorMessages = {
   },
 };
 
-// Runtime Configuration State: mutable config that changes at runtime
 interface RuntimeState {
   isInitialized: boolean;
   authenticationIsConfigured: boolean;
@@ -110,13 +86,11 @@ export const runtimeState: RuntimeState = {
   loggingIsConfigured: false,
 };
 
-// Configuration object interface for validation
 interface ConfigurationObject {
   apiBaseUrl: string;
   userCredentials: Record<string, unknown>;
 }
 
-// Validation Helper: ensure configuration object has required structure
 export function validateConfigurationIntegrity(configObj: unknown): boolean {
   if (!configObj || typeof configObj !== "object") {
     throw new Error("Configuration must be a non-null object");
@@ -141,7 +115,6 @@ export function validateConfigurationIntegrity(configObj: unknown): boolean {
   return true;
 }
 
-// Log entry interface for schema validation
 interface LogEntryForValidation {
   stack: string;
   level: string;
@@ -151,7 +124,6 @@ interface LogEntryForValidation {
   timestamp: string;
 }
 
-// Schema Validator: check if a log entry matches the expected schema
 export function validateLogSchema(logEntry: LogEntryForValidation): string[] {
   const validationErrors: string[] = [];
 
