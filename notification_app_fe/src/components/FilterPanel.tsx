@@ -1,5 +1,5 @@
-// FilterPanel component - allows users to filter by type and search
-// Responsive controls for querying notifications
+
+
 
 import React, { FC, ReactElement, ChangeEvent } from 'react';
 import {

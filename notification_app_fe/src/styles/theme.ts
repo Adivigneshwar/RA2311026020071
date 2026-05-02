@@ -1,5 +1,5 @@
-// Material UI theme configuration - provides consistent design language across app
-// Defines colors, typography, spacing, and component overrides
+
+
 
 import { createTheme, Theme } from '@mui/material/styles';
 

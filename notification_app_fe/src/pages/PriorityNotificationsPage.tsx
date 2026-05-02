@@ -1,5 +1,5 @@
-// PriorityNotificationsPage - displays top-priority notifications only
-// Auto-refreshes every 30 seconds and allows user-selected top-N count
+
+
 
 import React, { useState, FC, ReactElement } from 'react';
 import {
@@ -24,7 +24,7 @@ const PriorityNotificationsPage: FC = (): ReactElement => {
   const theme: Theme = useTheme();
   const isMobileScreen: boolean = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // Fetch priority notifications
+  
   const {
     topPriority: priorityNotifications,
     isLoading: isFetching,
@@ -32,30 +32,30 @@ const PriorityNotificationsPage: FC = (): ReactElement => {
     manualRefresh: refreshPriority,
   } = usePriorityNotifications(30000);
 
-  // Filter support (for read/unread state)
+  
   const {
     toggleRead: toggleNotificationRead,
     isRead: checkIsRead,
   } = useNotificationFiltering(priorityNotifications);
 
-  // User-selectable top-N count
+  
   const [topNCount, setTopNCount] = useState<number>(10);
   const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set());
 
-  // Handle count slider change
+  
   const handleTopNChange = (event: Event, newValue: number | number[]): void => {
     const value = Array.isArray(newValue) ? newValue[0] : newValue;
     setTopNCount(value);
     notificationLogger.logUserAction('Change top-N count', { newCount: value });
   };
 
-  // Handle delete
+  
   const handleDelete = (notificationId: string): void => {
     setDeletedIds((prev) => new Set([...prev, notificationId]));
     notificationLogger.logUserAction('Delete priority notification', { id: notificationId });
   };
 
-  // Filter top N and exclude deleted
+  
   const displayedNotifications: Notification[] = priorityNotifications
     .slice(0, topNCount)
     .filter((n) => !deletedIds.has(n.id));

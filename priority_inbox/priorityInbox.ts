@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Log } from '../logging_middleware/logger';
 
-// Type definitions for notifications
+
 interface Notification {
   id: string;
   type: 'Placement' | 'Result' | 'Event';
@@ -21,7 +21,7 @@ interface FetchResponse extends Response {
   json(): Promise<Notification[] | Record<string, unknown>>;
 }
 
-// Priority mapping: higher number = higher priority
+
 const TYPE_PRIORITY: Record<string, number> = {
   Placement: 3,
   Result: 2,
@@ -37,24 +37,24 @@ function ensureFetch(): void {
   }
 }
 
-// Comparator function type for MinHeap
+
 type CompareFn<T> = (a: T, b: T) => number;
 
-// Simple top-N using sorting approach. Accepts array of notifications and returns top N.
+
 export function topNByPriority(notifications: Notification[], N: number = 10): Notification[] {
   const sorted: Notification[] = notifications.slice().sort((a, b) => {
     const pa: number = TYPE_PRIORITY[a.type] || 0;
     const pb: number = TYPE_PRIORITY[b.type] || 0;
-    if (pa !== pb) return pb - pa; // higher priority first
-    // compare timestamps (ISO strings)
+    if (pa !== pb) return pb - pa; 
+    
     const ta: number = new Date(a.timestamp).getTime();
     const tb: number = new Date(b.timestamp).getTime();
-    return tb - ta; // newer first
+    return tb - ta; 
   });
   return sorted.slice(0, N);
 }
 
-// Streaming approach using a fixed-size min-heap (for efficiency when notifications are many)
+
 class MinHeap<T> {
   private _arr: T[];
   private _cmp: CompareFn<T>;
@@ -117,10 +117,10 @@ export function topNByHeap(notifications: Notification[], N: number = 10): Notif
   const cmp = (x: Notification, y: Notification): number => {
     const px: number = TYPE_PRIORITY[x.type] || 0;
     const py: number = TYPE_PRIORITY[y.type] || 0;
-    if (px !== py) return px - py; // min-heap: lower priority is "smaller"
+    if (px !== py) return px - py; 
     const tx: number = new Date(x.timestamp).getTime();
     const ty: number = new Date(y.timestamp).getTime();
-    return tx - ty; // older is smaller
+    return tx - ty; 
   };
 
   const heap: MinHeap<Notification> = new MinHeap(cmp);
@@ -135,13 +135,13 @@ export function topNByHeap(notifications: Notification[], N: number = 10): Notif
       heap.push(n);
     }
   }
-  // Extract heap content and sort final result by desired ordering
+  
   const arr: Notification[] = [];
   let item: Notification | undefined;
   while ((item = heap.pop()) !== undefined) {
     arr.push(item);
   }
-  // arr currently is in ascending (lowest priority) order, so reverse and then sort by our rules
+  
   arr.reverse();
   return arr.sort((a, b) => {
     const pa: number = TYPE_PRIORITY[a.type] || 0;
@@ -151,7 +151,7 @@ export function topNByHeap(notifications: Notification[], N: number = 10): Notif
   });
 }
 
-// Fetch notifications from API and return top N using logging middleware for tracing
+
 export async function fetchAndGetTopN(options: FetchAndGetTopNOptions = {}): Promise<Notification[]> {
   ensureFetch();
   const fetchImpl: typeof fetch = options.fetchImpl || fetch;
@@ -163,7 +163,7 @@ export async function fetchAndGetTopN(options: FetchAndGetTopNOptions = {}): Pro
       url: `${baseUrl}/evaluation-service/notifications`,
     });
   } catch (e) {
-    // don't fail if logging fails; continue fetching
+    
   }
 
   let res: FetchResponse;
@@ -176,7 +176,7 @@ export async function fetchAndGetTopN(options: FetchAndGetTopNOptions = {}): Pro
         error: errorMessage,
       });
     } catch (logErr) {
-      // ignore logging errors
+      
     }
     throw err;
   }
@@ -190,24 +190,24 @@ export async function fetchAndGetTopN(options: FetchAndGetTopNOptions = {}): Pro
         status: res.status,
       });
     } catch (logErr) {
-      // ignore logging errors
+      
     }
     throw new Error('Invalid JSON from notifications API');
   }
 
-  // Assume API returns an array
+  
   if (!Array.isArray(data)) {
     try {
       await Log('frontend', 'warn', 'api', 'Notifications API returned non-array', {
         type: typeof data,
       });
     } catch (logErr) {
-      // ignore logging errors
+      
     }
     throw new Error('Notifications API returned unexpected payload');
   }
 
-  // Use heap approach if dataset is large
+  
   const useHeap: boolean = data.length > 1000;
   const top: Notification[] = useHeap ? topNByHeap(data as Notification[], limit) : topNByPriority(data as Notification[], limit);
 
@@ -216,12 +216,12 @@ export async function fetchAndGetTopN(options: FetchAndGetTopNOptions = {}): Pro
       method: useHeap ? 'heap' : 'sort',
     });
   } catch (logErr) {
-    // ignore logging errors
+    
   }
   return top;
 }
 
-// CLI runner for local testing
+
 if (process.argv && process.argv[1] && path.basename(process.argv[1]) === 'priorityInbox.ts') {
   (async (): Promise<void> => {
     try {

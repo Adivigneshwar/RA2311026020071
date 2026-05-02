@@ -1,5 +1,5 @@
-// NotificationCard component - displays individual notification with read/unread state
-// Responsive card with type badge, message, timestamp, and interaction controls
+
+
 
 import React, { FC, ReactElement } from 'react';
 import {

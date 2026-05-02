@@ -1,5 +1,5 @@
-// Custom hook for managing notification filtering and search
-// Handles client-side filtering, type categorization, and read/unread state
+
+
 
 import { useState, useCallback, useMemo } from 'react';
 import { notificationLogger } from '../services/notificationLogger';
@@ -27,13 +27,13 @@ export function useNotificationFiltering(initialNotifications: Notification[] = 
   const [readStatusMap, setReadStatusMap] = useState<Record<string, boolean>>({});
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // Update all notifications when prop changes
+  
   const updateNotificationSource = useCallback((newNotifications: Notification[]): void => {
     setAllNotifications(newNotifications);
     notificationLogger.logStateChange('useNotificationFiltering', `Updated notification source with ${newNotifications.length} items`);
   }, []);
 
-  // Mark a specific notification as read or unread
+  
   const toggleReadStatus = useCallback((notificationId: string): void => {
     setReadStatusMap((prev) => {
       const newStatus: boolean = !prev[notificationId];
@@ -48,12 +48,12 @@ export function useNotificationFiltering(initialNotifications: Notification[] = 
     });
   }, []);
 
-  // Get current read status for a notification (defaults to unread)
+  
   const isNotificationRead = useCallback((notificationId: string): boolean => {
     return readStatusMap[notificationId] ?? false;
   }, [readStatusMap]);
 
-  // Apply filtering: type filter + search query
+  
   const filteredNotifications: Notification[] = useMemo(() => {
     let result: Notification[] = allNotifications;
 
@@ -72,7 +72,7 @@ export function useNotificationFiltering(initialNotifications: Notification[] = 
     return result;
   }, [allNotifications, activeTypeFilter, searchQuery]);
 
-  // Calculate statistics about notifications
+  
   const filterStats: NotificationStats = useMemo(() => {
     const stats: NotificationStats = {
       totalCount: allNotifications.length,

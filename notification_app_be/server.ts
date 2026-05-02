@@ -46,7 +46,7 @@ interface QueryParams {
 }
 
 const app: Express = express();
-const PORT: string | number = process.env.PORT || 5000;
+const PORT: string | number = ((process as unknown as { env: Record<string, unknown> }).env.PORT as string | number) || 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -174,7 +174,7 @@ function pickPriorityNotifications(limit: number): Notification[] {
     .slice(0, limit);
 }
 
-app.get("/health", (request: Request, response: Response) => {
+app.get("/health", (_request: Request, response: Response) => {
   response.json({ ok: true, service: "notification_app_be" });
 });
 
@@ -267,10 +267,10 @@ app.get("/evaluation-service/notifications", (request: Request, response: Respon
   return response.json(pagedItems);
 });
 
-app.use((request: Request, response: Response) => {
+app.use((_request: Request, response: Response) => {
   response.status(404).json({ message: "Route not found" });
 });
 
 app.listen(PORT, () => {
-  // no logging per requirement; server starts silently
+  
 });

@@ -1,11 +1,11 @@
-// Notification API service - handles all backend communication with centralized error handling
-// Uses logging middleware for tracing all API interactions
+
+
 
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import { notificationLogger } from './notificationLogger';
 import type { Notification, NotificationApiResponse } from '../types';
 
-const API_BASE_URL: string = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+const API_BASE_URL: string = process.env.REACT_APP_API_BASE_URL || 'http:
 const NOTIFICATIONS_ENDPOINT: string = '/evaluation-service/notifications';
 
 interface QueryParams {
@@ -52,7 +52,7 @@ class NotificationApiClient {
 
       await notificationLogger.logApiCall(NOTIFICATIONS_ENDPOINT, 'GET', response.status);
 
-      // Validate response structure
+      
       if (!Array.isArray(response.data)) {
         throw new Error('API returned non-array payload for notifications');
       }

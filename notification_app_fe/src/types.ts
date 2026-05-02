@@ -1,4 +1,4 @@
-// types.ts - centralized TypeScript type definitions
+
 
 export interface Notification {
   id: string;

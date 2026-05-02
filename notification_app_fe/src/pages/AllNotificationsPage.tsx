@@ -1,5 +1,5 @@
-// AllNotificationsPage - displays all notifications with filtering and pagination
-// Features: type filter, search, pagination, mark read/unread
+
+
 
 import React, { useCallback, FC, ReactElement } from 'react';
 import { Container, Box, Typography, useMediaQuery, useTheme, Theme } from '@mui/material';
@@ -20,7 +20,7 @@ const AllNotificationsPage: FC = (): ReactElement => {
   const theme: Theme = useTheme();
   const isMobileScreen: boolean = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // Fetch notifications
+  
   const {
     notifications: fetchedNotifications,
     isLoading: isFetching,
@@ -30,7 +30,7 @@ const AllNotificationsPage: FC = (): ReactElement => {
     refreshNotifications: refetchData,
   } = useNotificationsList(50, 1);
 
-  // Handle filtering
+  
   const {
     notifications: filteredNotifications,
     setTypeFilter: applyTypeFilter,
@@ -43,10 +43,10 @@ const AllNotificationsPage: FC = (): ReactElement => {
     availableTypes: typeOptions,
   } = useNotificationFiltering(fetchedNotifications);
 
-  // Track deleted notifications locally (frontend only)
+  
   const [deletedIds, setDeletedIds] = React.useState<Set<string>>(new Set());
 
-  // Calculate pagination for filtered results
+  
   const itemsPerPageForFiltered: number = 10;
   const filteredAfterDeleted: Notification[] = filteredNotifications.filter((n) => !deletedIds.has(n.id));
   const totalPages: number = Math.ceil(filteredAfterDeleted.length / itemsPerPageForFiltered);
@@ -58,7 +58,7 @@ const AllNotificationsPage: FC = (): ReactElement => {
     return filteredAfterDeleted.slice(start, end);
   }, [filteredAfterDeleted, currentFilteredPage]);
 
-  // Delete handler
+  
   const handleDelete = useCallback((notificationId: string): void => {
     setDeletedIds((prev) => new Set([...prev, notificationId]));
     notificationLogger.logUserAction('Delete notification (frontend only)', {
@@ -66,7 +66,7 @@ const AllNotificationsPage: FC = (): ReactElement => {
     });
   }, []);
 
-  // Clear all filters
+  
   const handleClearAllFilters = (): void => {
     applyTypeFilter(null);
     updateSearchInput('');

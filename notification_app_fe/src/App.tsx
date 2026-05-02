@@ -1,5 +1,5 @@
-// Main App component - routing and layout
-// Provides Material UI theme and page navigation
+
+
 
 import React, { useState, FC } from 'react';
 import {
@@ -63,7 +63,7 @@ const App: FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      {/* Header */}
+      {}
       <AppBar position="sticky">
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -99,7 +99,7 @@ const App: FC = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Mobile Sidebar */}
+      {}
       {isMobileScreen && (
         <Drawer
           anchor="right"
@@ -123,12 +123,12 @@ const App: FC = () => {
         </Drawer>
       )}
 
-      {/* Page Content */}
+      {}
       <Box component="main" sx={{ backgroundColor: theme.palette.background.default, minHeight: '100vh' }}>
         <ActivePageComponent />
       </Box>
 
-      {/* Footer */}
+      {}
       <Box
         component="footer"
         sx={{

@@ -1,4 +1,4 @@
-// StateComponents.tsx - displays various UI states (loading, empty, error, pagination)
+
 
 import React, { FC, ReactElement, MouseEvent } from 'react';
 import {
@@ -156,5 +156,5 @@ export const PaginationControls: FC<PaginationControlsProps> = ({
   );
 };
 
-// Import ChangeEvent for proper typing
+
 import { ChangeEvent } from 'react';

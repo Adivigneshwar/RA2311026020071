@@ -1,5 +1,5 @@
-// Custom hook for managing notification state and API interaction lifecycle
-// Handles fetching, error management, and refresh logic with logging
+
+
 
 import { useState, useEffect, useCallback, FC } from 'react';
 import { notificationApiClient } from '../services/notificationApiService';
@@ -75,7 +75,7 @@ export function useNotificationsList(
     loadNotifications(paginationState.currentPage, paginationState.itemsPerPage);
   }, [loadNotifications, paginationState.currentPage, paginationState.itemsPerPage]);
 
-  // Auto-load on component mount
+  
   useEffect(() => {
     loadNotifications(initialPage, initialLimit);
   }, []);
@@ -97,7 +97,7 @@ interface UsePriorityNotificationsReturn {
   manualRefresh: () => void;
 }
 
-// Hook for top-priority notifications specifically
+
 export function usePriorityNotifications(refreshIntervalMs: number = 30000): UsePriorityNotificationsReturn {
   const [priorityList, setPriorityList] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
